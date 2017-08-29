@@ -1,0 +1,1049 @@
+﻿<!doctype html><html><head>	<meta charset="utf-8">
+<title>ThinkPHP根据角色登录切换不同的数据库设计方案-雷小天博客</title>
+<meta name="keywords" content="切换数据库,thinkPHP" />
+<meta name="description" content="在很多开发工作中，会有这样的项目需求，后台根据不同的角色登录来选择不同的数据。这是一种权限管理的思想，其实他们还是共用一个数据库，只是根据不同的的登录账号来筛选不同的数据而已" />
+<meta name="author" content="雷小天" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" user-scalable="no" />
+<!--CSS-->
+
+
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+<link rel="shortcut icon" href="/Template/xiao/Home/Public/images/favicon.ico" />
+
+<!--CSS-->
+<link rel="stylesheet" href="css/default.css"/>
+<link rel="stylesheet" href="css/public.css"/>
+<link rel="stylesheet" href="css/animation.css"/>
+
+<link rel="stylesheet" type="text/css"href="css/skin_1.css"title="qingxin" />
+<link rel="stylesheet" type="text/css" href="css/skin_2.css"title="jianyue" />
+<link rel="stylesheet" type="text/css" href="css/skin_3.css"title="qingshuang" />
+<link rel="stylesheet" href="css/font-icon.css"/>
+<link rel="stylesheet" href="css/face.css"/>
+<!--JS-->
+<script type="text/javascript" src="js/jquery.2.1.4.min.js"></script>
+<script>
+	$("html").append("<div class='jiazai'><img src='picture/loading3.gif'/><span>正在加载中请等待...</span></div>")
+
+</script>
+<script type="text/javascript" src="js/my.js"></script>
+<!-- <script type="text/javascript" src="js/scripts.js"></script> -->
+
+<script type="text/javascript" src="js/superbg.min.js"></script>
+<!-- <script type="text/javascript" src="js/supersized.3.2.7.min.js"></script> -->
+<script type="text/javascript" src="js/superbg-custom.js"></script>
+
+<script type="text/javascript" src="js/album.js"></script>
+<script type="text/javascript" src="js/tooltip.js"></script>
+<script type="text/javascript" src="js/face.js"></script>
+<script type="text/javascript" src="js/layer.js" ></script>
+<script type="text/javascript" src="js/checkform.js" charset="utf-8"></script>
+<script type="text/javascript"  src="js/skin.js"></script>
+<!--[if lte IE 9]>
+	<script>window.location.href='http://cdn.dmeng.net/upgrade-your-browser.html?referrer='+location.href;</script>
+<![endif]-->
+<script type="text/javascript"  src="js/index.js"></script>
+<script type="text/javascript">
+
+			ajaxCommentUrl="http://www.100txy.com/Home/Index/ajax_comment";
+
+	    check_login="http://www.100txy.com/Home/User/check_login";
+
+			logoutUrl="http://www.100txy.com/Home/User/logout";
+
+	</script>
+	<script type="text/javascript" src="js/comment.js"></script>
+<!-- 百度统计 -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?136bd7aac0d158dec628add4b8dd4c3a";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- 百度统计 end-->
+	<!-- <script type="text/javascript" src="js/shcore.js"></script>
+	<script type="text/javascript" src="js/layer.js"></script>
+	<script type="text/javascript">
+	    SyntaxHighlighter.all();
+	    ajaxCommentUrl="http://www.100txy.com/Home/Index/ajax_comment";
+	    check_login="http://www.100txy.com/Home/User/check_login";
+			logoutUrl="http://www.100txy.com/Home/User/logout";
+	</script>
+	<script type="text/javascript" src="js/comment.js"></script>
+	<script type="text/javascript" src="js/index.js"></script> -->
+
+<script>
+$(function(){
+	$("nav").find("li").eq(2).addClass("nav-active");
+});
+</script>
+</head>
+
+<body class="nobg">
+<!--导航开始--><header class="myheader">	<div class="top">		<!--头像左边部分-->		<div class="top-left">		  <div class="logo"><a href="/"><img src="picture/logo3.gif"/></a></div>				<!--滚动消息-->			<div class="web-xiaoxi">				<i class="el-speaker"></i>				<ul class="mulitline">					<li>做了一些小调整，使之看起来更像博客。</li>					<li>本站提供丰富的素材下载，有源码、模板、插件...</li>					<li>内容如有侵犯，请立即联系管理员删除</li>				</ul>			</div>				<!--END 消息 -->
+			<!--手机菜单按钮-->			<div class="mobile-nav"><i class="el-lines"></i><i class="el-remove"></i></div>		</div>	<!--电脑导航开始-->		<nav class="mynav">			<ul class="orange-text">				<li class=""><a href="/">首页</a></li>				<!-- <li  ><a href="/Home/Index/chat.html" >说说</a></li> -->				<li  ><a href="/chat.html" >说说</a></li>				<li class='drop'  >					<a href="JavaScript:;" >分类<i class='el-chevron-down'></i></a>					<div class="drop-nav orange-text ">						<ul>							<li><a href="/category/28.html">PHP</a></li>							<li><a href="/category/29.html">Linux</a></li>							<li><a href="/category/36.html">Java</a></li>							<li><a href="/category/31.html">MySQL</a></li>							<li><a href="/category/30.html">Web</a></li>							<li><a href="/category/34.html">SEO</a></li>							<li><a href="/category/33.html">黑客</a></li>							<li><a href="/category/35.html">面试</a></li>							<li><a href="/category/32.html">人生</a></li>						</ul>					</div>				</li>				<!-- <li  ><a href="/Links/" >链接</a></li> -->				<li  ><a href="/album.html" >相册</a></li>				<li  ><a href="/downlist.html" >下载</a></li>				<li  ><a href="/feedback.html" >留言</a>	</li>				<li  ><a href="/about.html" >关于</a></li>			</ul>			 <!--移动的滑动-->        <div class="move-bg"></div>        <!--移动的滑动 end-->		</nav>		 <!--会员登录-->
+		<div class="vip" style="width: 4%;float: right;text-align: right;">			<a href="javascript:;" onclick="comment(this)"><img class="img-circle" src="picture/default_head_img.gif" alt="雷小天博客" title="雷小天博客" style="margin-top: 17px;"></a>					</div>	 <!--会员登录-->
+		<!--这里是手机导航-->		<div class="mob-menu">		<!--手机顶部搜索-->			<div class="search ">				<ul class="loginwap-third-list">                <li><a class="weixin-login" title="微信账号登录" href="/Home/User/oauth_login/type/wechat.html"></a></li>                <li><a class="qq-login" title="QQ账号登录" href="/Home/User/oauth_login/type/qq.html"></a></li>                <li style="margin-right: 0!important;"><a class="weibo-login" title="新浪微博账号登录" href="/Home/User/oauth_login/type/sina.html"></a></li>        </ul>			</div>			<!--手机下拉菜单-->			<ul class="mob-ulnav">				<li><a href="/">首页</a></li>				<li ><a href="/Home/Index/chat.html">说说</a></li>				<li class='mob-drop' >					<a href="javascrip:;">分类<i></i></a>					<ul class="mob-dropmenu">						<li><a href="/category/28.html">PHP</a></li>						<li><a href="/category/29.html">Linux</a></li>						<li><a href="/category/36.html">Java</a></li>						<li><a href="/category/31.html">MySQL</a></li>						<li><a href="/category/30.html">Web</a></li>						<li><a href="/category/34.html">SEO</a></li>						<li><a href="/category/33.html">黑客</a></li>						<li><a href="/category/35.html">面试</a></li>						<li><a href="/category/32.html">人生</a></li>						</ul>					</li>					<!-- <li  ><a href="/Links/" >链接</a></li> -->					<li  ><a href="/Home/Index/album.html" >相册</a></li>					<li  ><a href="/Home/Index/downlist.html" >下载</a></li>					<li  ><a href="/Home/Index/feedback.html" >留言</a>	</li>					<li  ><a href="/Home/Index/about.html" >关于</a></li>				</ul>			</div>	</div></header><!--导航结束-->
+
+
+<!--主题框架开始-->
+<div class="container">
+<!--左侧开始-->
+	<section>
+
+	<article >
+		<h3 class="arc-title index-title">ThinkPHP根据角色登录切换不同的数据库设计方案</h3>
+		<div class="post-line bg-color">
+			<ul>
+				<li><a title="雷小天发表于2017-08-28"><i class="el-time"></i><time>2017-08-28</time></a></li>
+				<li><a href="/Index/about.html" title="本文作者：雷小天"><i class="el-user"></i>雷小天</a></li>
+				<li><a href="#Comment" title="转到评论"><i class="el-comment"></i>0条</a></li>
+				<li><a title="已有 11 次浏览"><i class="el-eye-open"></i>(11)</a></li>
+			</ul>
+		</div>
+
+		
+		<div class="article-content bg-color">
+
+			<!-- <div class="article-content bg-color" id="Hotbg"> -->
+			<!--文章正文-->
+				<div class="article-body">
+					<p><span style="font-size: 14px;">在很多开发工作中，会有这样的项目需求，后台根据不同的角色登录来选择不同的数据。这是一种权限管理的思想，其实他们还是共用一个数据库，只是根据不同的的登录账号来筛选不同的数据而已。然而，今天我要讲的是根据不同的登录账号来切换整个数据库，这个项目需求一般是偏向后台，前台一般没有数据，因为数据库会变如果涉及前台数据的话，那么前台数据就会一下一个样，乱套了，用户体验非常不好。不瞒大家，今天我这个项目是只要后台的门禁管理系统，现在根据不同地区的客户选择他们自己的数据库，这样设计的话，方便以后数据的维护和管理。下面来看核心的代码吧。其实，切换数据库的操作放在模型里面就行了，但是为了全后台都能切换过来，所有在公共模型里面切换效果最明显了，这就涉及到要修改ThinkPHP的核心代码了。找到你项目的地址：ThinkPHP\Library\Think\Model.class.php，并在构造方法里面修改成如下代码：</span><br/></p><p><span style="font-size: 14px;"></span></p><pre style="margin-top: 0px; margin-bottom: 10px; padding: 5px; border-radius: 4px; box-sizing: border-box; overflow: auto; font-family: Menlo, Monaco, Consolas, &quot;Courier New&quot;, monospace; font-size: 13px; line-height: 15.6px; color: rgb(51, 51, 51); word-break: break-all; word-wrap: break-word; border-width: 1px; border-style: solid none; border-color: rgb(170, 204, 153); border-image: initial; white-space: pre-wrap; text-align: justify; background-color: rgba(255, 255, 255, 0.498);">&nbsp;&nbsp;public&nbsp;function&nbsp;__construct($name=&#39;&#39;,$tablePrefix=&#39;&#39;,$connection=&#39;&#39;)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;模型初始化
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;_initialize();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;获取模型名称
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(!empty($name))&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(strpos($name,&#39;.&#39;))&nbsp;{&nbsp;//&nbsp;支持&nbsp;数据库名.模型名的&nbsp;定义
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list($this-&gt;dbName,$this-&gt;name)&nbsp;=&nbsp;explode(&#39;.&#39;,$name);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}else{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;name&nbsp;&nbsp;&nbsp;=&nbsp;&nbsp;$name;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}elseif(empty($this-&gt;name)){
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;name&nbsp;=&nbsp;&nbsp;&nbsp;$this-&gt;getModelName();
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;设置表前缀
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if(is_null($tablePrefix))&nbsp;{//&nbsp;前缀为Null表示没有前缀
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;tablePrefix&nbsp;=&nbsp;&#39;&#39;;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}elseif(&#39;&#39;&nbsp;!=&nbsp;$tablePrefix)&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;tablePrefix&nbsp;=&nbsp;$tablePrefix;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}elseif(!isset($this-&gt;tablePrefix)){
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;tablePrefix&nbsp;=&nbsp;C(&#39;DB_PREFIX&#39;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;数据库初始化操作
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;获取数据库操作对象
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;当前模型有独立的数据库连接信息
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**100txycom**/
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switch&nbsp;($_SESSION[&#39;username&#39;])&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;&#39;admin&#39;:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;db(0,empty($this-&gt;connection)?$connection:$this-&gt;connection,true);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;&#39;czw001&#39;:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;db(0,empty($this-&gt;connection)?$connection:$this-&gt;connection,true);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case&nbsp;&#39;guanli&#39;:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;db(1,&quot;mysql://100txy:100txycom@123.45.67.890:3306/testdb&quot;,true);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$this-&gt;db(0,empty($this-&gt;connection)?$connection:$this-&gt;connection,true);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/**100txycomend**/
+&nbsp;&nbsp;&nbsp;&nbsp;}</pre><p><span style="font-size: 14px;">上面的代码实现的效果就是，如果是admin、czw001时，登录时使用的数据库就是config.php默认的数据库，如果是guanli那么使用的就是testdb数据库。</span></p><p style="text-align: center;"><span style="font-size: 14px;"><img src="picture/1503886805901779.jpg" title="雷小天博客" alt="雷小天博客"/></span></p><p style="text-align: center;"><span style="font-size: 12px;">admin登录-默认数据库</span></p><p style="text-align: center;"><span style="font-size: 12px;"><img src="picture/1503886841631859.jpg" title="雷小天博客" alt="雷小天博客"/></span></p><p style="text-align: center;"><span style="font-size: 12px;">guanli登录-testdb数据库</span></p><p><span style="font-size: 12px;"><span style="font-size: 14px;">值得注意的数，为保持项目的一致性两个数据库的结构应该一致，而且登录账号表要数据和结构一致。</span><br/></span></p>
+			  </div>
+				<!--END 文章正文->
+				<!--分享-->
+				<div class="article-fx"><span class="img-circle" href="javascript:void(0)" onClick="dashangToggle()" class="img-circle">打赏</span>&nbsp;&nbsp;&nbsp;<a class="fx-btn img-circle" href="javascript:;" class="img-circle">分享</a>
+					<div class="bd-fx arc-bdfx">
+						<i class="el-remove fx-close"></i>
+						<ul class="bdsharebuttonbox">
+							<li><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></li>
+							<li><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a></li>
+							<li><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a></li>
+							<li><a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a></li>
+						</ul>						<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>					</div>
+				</div>				<!--END 分享-->			<hr>
+				<!--标签-->				<div class="article_tag">          <ul >				<!--		<li><a title="封寒紫 当前位于：浙江省金华市">浙江省金华市</a></li>-->						<!-- <li><a href="/Home/Index/category.html" title="归类："></a></li> -->						<li><a href="/category/28.html" title="归类：PHP">PHP</a></li>						<li>
+			            <a class="b-tag-name" title="标签：ThinkPHP" href="/Index/tag/tid/26.html">ThinkPHP</a>							</li>          </ul>        </div>
+			</div>
+	</article>
+	<!--上一篇，下一篇-->
+	<div class="shangyip bg-color">
+		<span><i class="el-arrow-up"></i>上一篇：<a class='blue-text' href="/article/94.html" title='上一篇：Java基于TCP的socket通讯案例'>Java基于TCP的socket通讯案例</a></span>
+		<span><i class="el-arrow-down"></i>下一篇：<a class='blue-text' href="" >没有了</a></span>
+	</div>
+<!--随机推荐-->
+<div class="maybe-love">
+	<h4 class="index-title"><i class="el-heart"></i>您还可能喜欢</h4>
+	<ul>
+		<li>
+			<a href="/article/23.html">
+			<img src="picture/5859524f9dcbf.png"  alt="用PHP做网站的PV、UV、IP访客统计" title="用PHP做网站的PV、UV、IP访客统计" />
+			<span >用PHP做网站的PV、UV、IP访客统计</span>
+			</a>
+		</li><li>
+			<a href="/article/41.html">
+			<img src="picture/20170121588381411557f.png"  alt="MySQL双引号、单引号转义保存详解" title="MySQL双引号、单引号转义保存详解" />
+			<span >MySQL双引号、单引号转义保存详解</span>
+			</a>
+		</li><li>
+			<a href="/article/43.html">
+			<img src="picture/201702055896db9ddc027.jpg"  alt="PHP实现一次性多张图片上传功能" title="PHP实现一次性多张图片上传功能" />
+			<span >PHP实现一次性多张图片上传功能</span>
+			</a>
+		</li><li>
+			<a href="/article/72.html">
+			<img src="picture/201706025931324e15bab.png"  alt="个人博客运行时间统计代码" title="个人博客运行时间统计代码" />
+			<span >个人博客运行时间统计代码</span>
+			</a>
+		</li>
+	</ul>
+</div>
+	<!--评论列表-->
+	<!--END评论列表-->
+	<!--评论表单-->
+<h3 class="form-btn blue-text" ><a href="javascript:;" ><i class="el-edit"></i>我要留言 / 展开表单</a></h3>
+<!-- 通用评论开始 -->
+<script>
+    var userEmail='';
+</script>
+<style type="text/css">
+
+.b-head-img{
+  width: 45px;
+  height: 45px;
+  position: absolute;
+  left: 15px;top: 5px;
+}
+.b-box-textarea{
+  margin: 5px 0;
+  height: 120px;
+  border-radius: 4px;
+  position: relative;z-index: 1;
+  border:#ddd 1px solid;
+  box-sizing:border-box;
+  box-shadow:inset 0 0 2px rgba(0,0,0,0.05);
+  font-family:'Microsoft YaHei';
+  /*text-indent:10px;*/
+  background:rgba(255,255,255,0.5);transition:all 0.5s;
+  -webkit-transition:all 0.5s;
+}
+.b-box-content{
+  padding: 5px;
+  height: 75px;
+  border: none;
+  border-bottom: 1px solid #E6EAED;
+  color: #999;overflow-y: auto;
+  font-size: 12px;
+}
+.b-box-content:focus{
+  outline:none;border:#ff6700 1px solid;box-shadow: 0 0 8px rgba(255, 103, 0,0.7);
+}
+.b-submit-button{
+  position: absolute;
+  right: 0.5px;
+  bottom: 1px;
+}
+.b-submit-button input{
+  height:30px;
+  width:60px;
+}
+</style>
+    <div class="b-box-textarea" >
+        <div class="b-box-content" contenteditable="true" onfocus="delete_hint(this)">请先登陆后发表评论</div>
+        <ul class="b-emote-submit">
+            <li class="b-emote">
+                <i class="el el-reddit" onclick="getTuzki(this)"></i>
+                <input style="height:30px;font-size:12px;margin-top:1px;" class="form-control b-email" type="text" name="email" placeholder="接收回复的email地址" value="">
+                <div class="b-tuzki">
+
+                </div>
+            </li>
+            <li class="b-submit-button">
+                <input type="button" value="评 论" aid="95" pid="0" onclick="comment(this)">
+            </li>
+            <li class="b-clear-float"></li>
+        </ul>
+    </div>
+
+
+<!-- 新的评论 -->
+    <div class="comment-area" id="Comment">
+    <h4 class="index-title"><i class="el el-comment-alt"></i> 当前共有<span>0</span> 条评论
+      <a href="Comment/?48-1.html"><i class="el el-th-list"></i>浏览所有评论</a>
+    </h4>
+          <ul class="b-user-comment">
+                      </ul>
+      </div>
+<!-- 通用评论结束 -->
+
+</section>
+<!--左侧结束-->
+<!--=========右侧开始==========--><aside class="myaside"><!--关注我--><div class="focus-me bg-color animation-div">	<h4 class="index-title"><i class="el-heart"></i>关注我<small>Focus Me</small></h4>
+		<div class="xiangguan">
+				<div><a class="benbo" href="http://weibo.com/100txy" target="_blank"><i class="el el-rss"></i></a><span>新浪微博</span></div>				<!-- <div><a class="benbo" href="#" target="_blank"><span id="qq" style="padding-top:45px;">QQ空间</span></a><span>QQ空间</span></div> -->
+				<div><a class="taobao" href="javascript:;"  target="_blank"><i class="el el-github"></i></a><span>github</span></div>
+				<div><a class="side-fx"><i class="el-share-alt"></i></a><span>分享本博</span></div>
+				<div><a class="mail-btn" href="javascript:;"><i class="el el-picasa"></i></a><span>公众号</span></div>		</div>
+		<!-- <div class="mail-dy">			<form  action="http://list.qq.com/cgi-bin/qf_compose_send" method="post" target="_blank">				<input type="hidden" name="t" value="qf_booked_feedback"/>				<input type="hidden" name="id" value="b2b151b4bc010575c083e18e227ae907aac82bc47e84d3e0"/>				<span>订阅</span>				<input name="to" type="text"  placeholder="输入邮箱点击订阅吧" onfocus="this.placeholder=''" onblur="this.placeholder='输入邮箱点击订阅吧'"/>				<i class="el-envelope"><input value=" "type="submit"/></i>			</form>			<i class="el-remove fx-close"></i>		</div> -->		<div class="mail-dy">
+
+			<img src="picture/weixin.jpg">
+			<i class="el-remove fx-close"></i>
+
+		</div>
+
+		<div class="bd-fx side-bdfx ">			<i class="el-remove fx-close"></i>			<ul class="bdsharebuttonbox">				<li><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></li>
+				<li><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a></li>
+				<li><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a></li>
+				<li><a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a></li>
+			</ul>
+			<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+		</div>
+</div>
+<!--右侧个人统计-->
+<div class="web-author bg-color animation-div">
+		<div class="author-tx">
+			<a class="img-circle" href="/Home/Index/about.html" title="点击查看详细信息">
+				<img class="img-circle" src="picture/ava.jpg"/>
+			</a>
+		</div>
+		<div class="author-name"><span class="blue-text">雷小天</span><p>一位90后全栈开发站长</p></div>
+		<div class="data-info">
+			<ul>
+				<li><strong>1</strong><span>今日会员</span></li>
+				<li><strong></strong><span>今日访问ip</span></li>
+				<!-- <li><strong>79</strong><span>文章数量</span></li> -->				<li><strong></strong><span>今日访客</span></li>
+			</ul>
+		</div>
+</div>
+<!--END 右侧个人统计-->
+<!--搜索-->
+<div class="search animation-div">
+	<form action="/Home/Index/search.html" method="get">
+		<div class="search-index">
+			<input name="search_word" type="text"  placeholder="请输入关键字" onfocus="this.placeholder=''" onblur="this.placeholder='请输入关键字'"/>
+			<i class="el-search"><input value=" "type="submit"/></i>
+		</div>
+	</form>
+</div>
+<!--最新更新-->
+<div class="clos-new bg-color animation-div">
+	<h4 class="index-title"><i class="el-bulb"></i>最新更新<small>Close New</small></h4>
+	<ul>
+	<!-- <li><i class="el-cloud"></i><iframe id="tianqi"  scrolling="no" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=34&icon=1&num=3"></iframe></li> -->
+	<li><span><i class="el-arrow-up"></i>最近：<font class="blue-text">雷小天</font> 今天&nbsp;&nbsp;10:24</span><a title="ThinkPHP根据角色登录切换不同的数据库设计方案" > 更新了<b class="lable">文章</b></a></li>
+	<li><i class="el-calendar"></i>历史上的今天：<a title="1749年8月28日 德国著名诗人、剧作家歌德诞辰" class="orange-text">德国著名诗人、剧作家歌德诞辰</a></li>
+</ul>
+</div>
+<!--说说--><div class="bg-color animation-div">	<h4 class="index-title"><i class="el-headphones"></i>说说<small>Shuo Shuo</small></h4>	<div class="shuo-side">		<ul>			<li id="Hots">				<span class="shuobg1"><strong>08-15 </strong></span>				<div><a title="搭建Android应用开发环境所需工具及其项目结构" href="/chatdetail/46.html" >搭建Android应用开发环境所需工具及其项目结构</a><b title="点击37">(37)</b></div>			</li><li id="Hots">				<span class="shuobg2"><strong>08-15 </strong></span>				<div><a title="Java开发环境搭建" href="/chatdetail/45.html" >Java开发环境搭建</a><b title="点击32">(32)</b></div>			</li><li id="Hots">				<span class="shuobg3"><strong>08-11 </strong></span>				<div><a title="Java中如何使用数组" href="/chatdetail/44.html" >Java中如何使用数组</a><b title="点击88">(88)</b></div>			</li>		</ul>	</div></div><!--推荐图文--><div class="article-push  bg-color animation-div">
+	<h4 class="index-title"><i class="el-asl"></i>推荐图文<small>Push Article</small></h4>
+	<ul>
+		<li>
+			<div class="arcimg img_loading">
+				<a href="/article/64.html" target="_blank">
+          <img src="picture/20170118587f0307db632.jpg" alt="PHP生成excel表格导入及导出实用案例" title="PHP生成excel表格导入及导出实用案例">
+        </a>
+			</div>
+			<div class="arc-right">
+				<h4 class="blue-text"><a href="/article/64.html">PHP生成excel表格导入及导出实用案例</a></h4>
+				<p>以前记得总是用PHP生成csv格式的表格，可现在excel表格越来越流行了，许多公司都要求做成excel格式表格，但这并不复杂，因为phpexcel为我们提供了方便、快捷的excel操作类</p>
+				<ul>
+					<li><a title="发表于2017-05-16"><i class="el-time"></i>2017-05-16</a></li>
+					<li><a title="426次浏览"><i class="el-fire"></i>426</a></li>
+				</ul>
+			</div>
+		</li><li>
+			<div class="arcimg img_loading">
+				<a href="/article/57.html" target="_blank">
+          <img src="picture/2017032458d52f2124932.jpg" alt="Linux服务器运维常用操作命令" title="Linux服务器运维常用操作命令">
+        </a>
+			</div>
+			<div class="arc-right">
+				<h4 class="blue-text"><a href="/article/57.html">Linux服务器运维常用操作命令</a></h4>
+				<p>我把自己常用的Linux操作命令总结一下，以后用的时候也方便查找</p>
+				<ul>
+					<li><a title="发表于2017-03-23"><i class="el-time"></i>2017-03-23</a></li>
+					<li><a title="613次浏览"><i class="el-fire"></i>613</a></li>
+				</ul>
+			</div>
+		</li><li>
+			<div class="arcimg img_loading">
+				<a href="/article/50.html" target="_blank">
+          <img src="picture/2017030258b7a67fe3a5c.jpg" alt="Windows Redis安装及使用" title="Windows Redis安装及使用">
+        </a>
+			</div>
+			<div class="arc-right">
+				<h4 class="blue-text"><a href="/article/50.html">Windows Redis安装及使用</a></h4>
+				<p>Redis是一个开源的使用ANSI C语言编写、遵守BSD协议、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API。它通常被称为数据结构服务器</p>
+				<ul>
+					<li><a title="发表于2017-03-02"><i class="el-time"></i>2017-03-02</a></li>
+					<li><a title="459次浏览"><i class="el-fire"></i>459</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</div>
+<!--文章排行tab-->
+<div class="mytab bg-color animation-div">
+	<div class="tab-btn"><a class="hd-btn tab-active"href="javascript:;"><i class="el-comment-alt"></i>文章互动</a><a class="ph-btn"href="javascript:;"><i class="el-signal"></i>文章排行</a></div>
+	<ul class="hudong-ul"><!--=======查询相册=============-->	<li>			<div class="sd-tx">			<a href="/article/24.html" target="_blank" rel="nofollow" title="去《分析百度蜘蛛IP，做最牛逼的SEOer》看看">					<img src="picture/654c3a02fa964352a67580324daa5c15.gif" alt="lve" class="img-circle"/>			</a>			</div>			<div class="sd-name">				<span><i class="el-user"></i>lve<time >2017-08-05</time></span>				<a class="blue-text" href="#" title="&lt;img src=&quot;http://www.100txy.com/Public/emote/tuzki/t_0005.gif&quot; title=&quot;背扭&quot; alt=&quot;雷小天博客&quot;&gt;" ><img src="picture/t_0005.gif" title="背扭" alt="雷小天博客"></a>			</div>		</li><li>			<div class="sd-tx">			<a href="/article/82.html" target="_blank" rel="nofollow" title="去《多个相同的类选择器点击获取当前的id值》看看">					<img src="picture/654c3a02fa964352a67580324daa5c15.gif" alt="lve" class="img-circle"/>			</a>			</div>			<div class="sd-name">				<span><i class="el-user"></i>lve<time >2017-08-05</time></span>				<a class="blue-text" href="#" title="这是什么版本的TP?" >这是什么版本的TP?</a>			</div>		</li><li>			<div class="sd-tx">			<a href="/article/81.html" target="_blank" rel="nofollow" title="去《阿里云短信服务API接入案例》看看">					<img src="picture/c4c6f52acf294c019abed1c1b5da7966.gif" alt="Goff" class="img-circle"/>			</a>			</div>			<div class="sd-name">				<span><i class="el-user"></i>Goff<time >2017-08-01</time></span>				<a class="blue-text" href="#" title="sendsms.class.php这个文件是哪来的？" >sendsms.class.php这个文件是哪来的？</a>			</div>		</li><li>			<div class="sd-tx">			<a href="/article/81.html" target="_blank" rel="nofollow" title="去《阿里云短信服务API接入案例》看看">					<img src="picture/69c641261603420780c204aa07fa7f4c.gif" alt="ゞ丫头的猪" class="img-circle"/>			</a>			</div>			<div class="sd-name">				<span><i class="el-user"></i>ゞ丫头的猪<time >2017-07-19</time></span>				<a class="blue-text" href="#" title="您好我又做了短信查询功能 代码为demo的querySendDetails函数 &amp;nbsp;但是报错400错误 &amp;nbsp;错误信息为&amp;nbsp;MissingCurrentPage CurrentPage is mandatory for this action. HTTP Status: 400 RequestID: C7271009-929A-439F-8E67-593004C005AD &amp;nbsp;您有时间能帮看一下吗" >您好我又做了短信查询功能 代码为demo的querySendDetails函数 &nbsp;但是报错400错误 &nbsp;错误信息为&nbsp;MissingCurrentPage CurrentPage is mandatory for this action. HTTP Status: 400 RequestID: C7271009-929A-439F-8E67-593004C005AD &nbsp;您有时间能帮看一下吗</a>			</div>		</li><li>			<div class="sd-tx">			<a href="/article/81.html" target="_blank" rel="nofollow" title="去《阿里云短信服务API接入案例》看看">					<img src="picture/39402d19e1834a49aad812ff80dd70d2.gif" alt="学霸君" class="img-circle"/>			</a>			</div>			<div class="sd-name">				<span><i class="el-user"></i>学霸君<time >2017-07-12</time></span>				<a class="blue-text" href="#" title="你好 我这边报 message 签名错误 阿里云的短信签名也通过了 呀" >你好 我这边报 message 签名错误 阿里云的短信签名也通过了 呀</a>			</div>		</li>	</ul>
+	<!--文章排行-->
+	<ul class="paihang-ul">
+		<li><span></span><a href="/article/43.html" title="PHP实现一次性多张图片上传功能">PHP实现一次性多张图片上传功能<b>(3475)</b></a></li><li><span></span><a href="/article/41.html" title="MySQL双引号、单引号转义保存详解">MySQL双引号、单引号转义保存详解<b>(1964)</b></a></li><li><span></span><a href="/article/42.html" title="个人网站微信授权登录功能怎么开发？">个人网站微信授权登录功能怎么开发？<b>(1879)</b></a></li><li><span></span><a href="/article/48.html" title="一位资深php程序员在北京的面试30个题目">一位资深php程序员在北京的面试30个题目<b>(1766)</b></a></li><li><span></span><a href="/article/32.html" title="如何判定PHP常量是否被定义？">如何判定PHP常量是否被定义？<b>(1061)</b></a></li>
+	</ul>
+	</div>
+<!--标签-->
+<div class="cloud bg-color animation-div">
+    <h4 class="index-title"><i class="el-tags"></i>标签云<small>Tags Clouds</small></h4>
+	<ul id="3dcloud">
+		
+			
+	 		<li><a class="tstyle-1" href="/tag/20.html" onclick="return recordId('tid',20)" title="标签：CSS3 ">CSS3 (0)</a></li>
+			
+	 		<li><a class="tstyle-2" href="/tag/21.html" onclick="return recordId('tid',21)" title="标签：HTML5 ">HTML5 (1)</a></li>
+			
+	 		<li><a class="tstyle-3" href="/tag/22.html" onclick="return recordId('tid',22)" title="标签：Ecstore ">Ecstore (1)</a></li>
+			
+	 		<li><a class="tstyle-4" href="/tag/23.html" onclick="return recordId('tid',23)" title="标签：Linux ">Linux (14)</a></li>
+			
+	 		<li><a class="tstyle-1" href="/tag/24.html" onclick="return recordId('tid',24)" title="标签：Mysql ">Mysql (4)</a></li>
+			
+	 		<li><a class="tstyle-2" href="/tag/25.html" onclick="return recordId('tid',25)" title="标签：jQuery ">jQuery (11)</a></li>
+			
+	 		<li><a class="tstyle-3" href="/tag/26.html" onclick="return recordId('tid',26)" title="标签：ThinkPHP ">ThinkPHP (4)</a></li>
+			
+	 		<li><a class="tstyle-4" href="/tag/27.html" onclick="return recordId('tid',27)" title="标签：SEO ">SEO (5)</a></li>
+			
+	 		<li><a class="tstyle-1" href="/tag/28.html" onclick="return recordId('tid',28)" title="标签：工程师 ">工程师 (1)</a></li>
+			
+	 		<li><a class="tstyle-2" href="/tag/29.html" onclick="return recordId('tid',29)" title="标签：Mysql ">Mysql (1)</a></li>
+			
+	 		<li><a class="tstyle-3" href="/tag/30.html" onclick="return recordId('tid',30)" title="标签：个人博客 ">个人博客 (3)</a></li>
+			
+	 		<li><a class="tstyle-4" href="/tag/31.html" onclick="return recordId('tid',31)" title="标签：session ">session (2)</a></li>
+			
+	 		<li><a class="tstyle-1" href="/tag/32.html" onclick="return recordId('tid',32)" title="标签：cookie ">cookie (1)</a></li>
+			
+	 		<li><a class="tstyle-2" href="/tag/33.html" onclick="return recordId('tid',33)" title="标签：安全 ">安全 (3)</a></li>
+			
+	 		<li><a class="tstyle-3" href="/tag/34.html" onclick="return recordId('tid',34)" title="标签：Web开发 ">Web开发 (3)</a></li>
+			
+	 		<li><a class="tstyle-4" href="/tag/35.html" onclick="return recordId('tid',35)" title="标签：node.js ">node.js (1)</a></li>
+			
+	 		<li><a class="tstyle-1" href="/tag/36.html" onclick="return recordId('tid',36)" title="标签：bootstrap ">bootstrap (1)</a></li>
+			
+	 		<li><a class="tstyle-2" href="/tag/37.html" onclick="return recordId('tid',37)" title="标签：个人博客模板 ">个人博客模板 (3)</a></li>
+			
+	 		<li><a class="tstyle-3" href="/tag/38.html" onclick="return recordId('tid',38)" title="标签：微信 ">微信 (2)</a></li>
+			
+	 		<li><a class="tstyle-4" href="/tag/39.html" onclick="return recordId('tid',39)" title="标签：缓存 ">缓存 (0)</a></li>
+			
+	 		<li><a class="tstyle-1" href="/tag/40.html" onclick="return recordId('tid',40)" title="标签：页面静态化 ">页面静态化 (1)</a></li>
+			
+	 		<li><a class="tstyle-2" href="/tag/41.html" onclick="return recordId('tid',41)" title="标签：面试题 ">面试题 (4)</a></li>
+			
+	 		<li><a class="tstyle-3" href="/tag/42.html" onclick="return recordId('tid',42)" title="标签：数据结构 ">数据结构 (2)</a></li>
+			
+	 		<li><a class="tstyle-4" href="/tag/43.html" onclick="return recordId('tid',43)" title="标签：Redis ">Redis (2)</a></li>
+			
+	 		<li><a class="tstyle-1" href="/tag/44.html" onclick="return recordId('tid',44)" title="标签：Nosql ">Nosql (2)</a></li>
+			
+	 		<li><a class="tstyle-2" href="/tag/45.html" onclick="return recordId('tid',45)" title="标签：socket ">socket (4)</a></li>
+			
+	 		<li><a class="tstyle-3" href="/tag/46.html" onclick="return recordId('tid',46)" title="标签：UDP协议 ">UDP协议 (2)</a></li>
+			
+	 		<li><a class="tstyle-4" href="/tag/47.html" onclick="return recordId('tid',47)" title="标签：TCP协议 ">TCP协议 (1)</a></li>
+			
+	 		<li><a class="tstyle-1" href="/tag/48.html" onclick="return recordId('tid',48)" title="标签：SVN ">SVN (2)</a></li>
+			
+	 		<li><a class="tstyle-2" href="/tag/49.html" onclick="return recordId('tid',49)" title="标签：ajax ">ajax (2)</a></li>
+			
+	 		<li><a class="tstyle-3" href="/tag/50.html" onclick="return recordId('tid',50)" title="标签：模块功能 ">模块功能 (5)</a></li>
+			
+	 		<li><a class="tstyle-4" href="/tag/51.html" onclick="return recordId('tid',51)" title="标签：laravel ">laravel (1)</a></li>
+			
+	 		<li><a class="tstyle-1" href="/tag/52.html" onclick="return recordId('tid',52)" title="标签：LAMP ">LAMP (4)</a></li>
+			
+	 		<li><a class="tstyle-2" href="/tag/53.html" onclick="return recordId('tid',53)" title="标签：API ">API (1)</a></li>
+			
+	 		<li><a class="tstyle-3" href="/tag/54.html" onclick="return recordId('tid',54)" title="标签：VMware ">VMware (2)</a></li>
+			
+	 		<li><a class="tstyle-4" href="/tag/55.html" onclick="return recordId('tid',55)" title="标签：手机模板 ">手机模板 (6)</a></li>
+			
+	 		<li><a class="tstyle-1" href="/tag/56.html" onclick="return recordId('tid',56)" title="标签：源码项目 ">源码项目 (1)</a></li>
+			
+	 		<li><a class="tstyle-2" href="/tag/57.html" onclick="return recordId('tid',57)" title="标签：PC模板 ">PC模板 (3)</a></li>
+			
+	 		<li><a class="tstyle-3" href="/tag/58.html" onclick="return recordId('tid',58)" title="标签：XSS ">XSS (1)</a></li>
+			
+	 		<li><a class="tstyle-4" href="/tag/59.html" onclick="return recordId('tid',59)" title="标签：开发工具 ">开发工具 (1)</a></li>
+			
+	 		<li><a class="tstyle-1" href="/tag/60.html" onclick="return recordId('tid',60)" title="标签：小程序 ">小程序 (1)</a></li>
+			
+	 		<li><a class="tstyle-2" href="/tag/61.html" onclick="return recordId('tid',61)" title="标签：图片上传 ">图片上传 (1)</a></li>
+			
+	 		<li><a class="tstyle-3" href="/tag/62.html" onclick="return recordId('tid',62)" title="标签：学习 ">学习 (3)</a></li>
+			
+	 		<li><a class="tstyle-4" href="/tag/63.html" onclick="return recordId('tid',63)" title="标签：正则表达式 ">正则表达式 (1)</a></li>
+			
+	 		<li><a class="tstyle-1" href="/tag/64.html" onclick="return recordId('tid',64)" title="标签：http协议 ">http协议 (2)</a></li>
+	</ul>
+</div><!--最近会员--><!-- <div class="cloud bg-color animation-div">    <h4 class="index-title"><i class="el el-torso"></i>活跃会员<small>Active Members</small></h4>	<ul id="3dcloud">		<li>							<a  class="orange-text" href="/Home/Index/picture/id/1.html" title="杨青个人博客">							<img class="img-circle" alt="杨青个人博客" src="picture/2016411192233455.jpg" title="杨青个人博客"/>							</a>					</li><li>							<a  class="orange-text" href="/Home/Index/picture/id/2.html" title="卢松松博客">							<img class="img-circle" alt="卢松松博客" src="picture/2016418225948574.jpg" title="卢松松博客"/>							</a>					</li><li>							<a  class="orange-text" href="/Home/Index/picture/id/3.html" title="个人博客主页欣赏">							<img class="img-circle" alt="个人博客主页欣赏" src="picture/20161225585ea5215cfc2.jpg" title="个人博客主页欣赏"/>							</a>					</li><li>							<a  class="orange-text" href="/Home/Index/picture/id/4.html" title="月光博客">							<img class="img-circle" alt="月光博客" src="picture/201701095872e61ed4a98.jpg" title="月光博客"/>							</a>					</li><li>							<a  class="orange-text" href="/Home/Index/picture/id/5.html" title="全球中文网站前5排行榜">							<img class="img-circle" alt="全球中文网站前5排行榜" src="picture/201705085872e61ed4a98.jpg" title="全球中文网站前5排行榜"/>							</a>					</li><li>							<a  class="orange-text" href="/Home/Index/picture/id/6.html" title="laravel框架个人博客系统">							<img class="img-circle" alt="laravel框架个人博客系统" src="picture/2017061559425a3e45e41.jpg" title="laravel框架个人博客系统"/>							</a>					</li><li>							<a  class="orange-text" href="/Home/Index/picture/id/7.html" title="企业招聘前端工程师面试题">							<img class="img-circle" alt="企业招聘前端工程师面试题" src="picture/201708155992a4329eefe.jpg" title="企业招聘前端工程师面试题"/>							</a>					</li>	</ul></div> -->
+<!--友情链接-->
+<div class="side-link ">
+	<h4 class="index-title"><i class="el-paper-clip"></i>友情链接<small>Friend Links</small><a  href="/link.html"><i class="el el-plus"></i>申请</a></h4>
+	<ul>
+		<li><a href="http://100txy.com" target="_blank" title="雷小天博客">雷小天博客</a></li><li><a href="http://www.100txy.com" target="_blank" title="杨青个人博客">杨青个人博客</a></li><li><a href="http://www.100txy.com" target="_blank" title="月光博客">月光博客</a></li><li><a href="http://www.100txy.com" target="_blank" title="卢松松博客">卢松松博客</a></li><li><a href="http://www.luoyechenfei.com/" target="_blank" title="落叶尘飞">落叶尘飞</a></li>
+	</ul>
+</div>
+</aside>
+<!--=========END右侧==========-->
+</div><!--主题框架结束-->
+<!---底部开始--><footer>	<div class="footer-area">	<!--博客相关-->	<div class="about-blog">		<h4>素材排行</h4>		<div class="ft-part1">					<!--素材排行-->				<ul class="paihang-ul" style="display:block;width:100%;">					<li><span></span><a href="/Home/Index/downdetail/id/3.html" title="杨青个人博客模板分享"> 杨青个人博客模板分享<b>(3178)</b></a></li><li><span></span><a href="/Home/Index/downdetail/id/6.html" title="个人博客模板下载（emlog系统）"> 个人博客模板下载（emlog系统）<b>(2381)</b></a></li><li><span></span><a href="/Home/Index/downdetail/id/2.html" title="柠檬绿兔小白个人博客模板下载"> 柠檬绿兔小白个人博客模板下载<b>(1751)</b></a></li><li><span></span><a href="/Home/Index/downdetail/id/5.html" title="jQuery俄罗斯方块小游戏下载"> jQuery俄罗斯方块小游戏下载<b>(1233)</b></a></li><li><span></span><a href="/Home/Index/downdetail/id/4.html" title="juqery图片特效轮播图插件（转动）"> juqery图片特效轮播图插件（转动）<b>(1066)</b></a></li>				</ul>		</div>	</div>
+	<!--最新留言-->	<div class="close-fd mob-hidden">		 <h4>留言频道</h4>		<ul >			<li>			<div class="sd-tx">					<a href=""  target="_blank" rel="nofollow" title="《jiyi》 没有填写网站?">										<img src="picture/29.jpg" alt="jiyi" class="img-circle"/>				</a>			</div>			<div class="sd-name">				<span>jiyi</span>				<a class="blue-text" href="/Home/Index/feedback.html/#Comment-233" title="[ali_36]好喜欢" >[ali_36]好喜欢</a>			</div>			</li><li>			<div class="sd-tx">					<a href=""  target="_blank" rel="nofollow" title="《Phoenix》 没有填写网站?">										<img src="picture/72.jpg" alt="Phoenix" class="img-circle"/>				</a>			</div>			<div class="sd-name">				<span>Phoenix</span>				<a class="blue-text" href="/Home/Index/feedback.html/#Comment-227" title="可不可以在你网站相册上贴点后台的图片，不知道做的有没有前台这么酷炫？" >可不可以在你网站相册上贴点后台的图片，不知道做的有没有前台这么酷炫？</a>			</div>			</li><li>			<div class="sd-tx">												<a href="http://www.yangqq.com"  target="_blank" rel="nofollow" title="去 《dancesmile》 的网站看看?">					<img src="picture/34.jpg" alt="dancesmile" class="img-circle"/>				</a>			</div>			<div class="sd-name">				<span>dancesmile</span>				<a class="blue-text" href="/Home/Index/feedback.html/#Comment-223" title="效果和内容都做得不错，不过这个页面加载起来的速度，慢了点" >效果和内容都做得不错，不过这个页面加载起来的速度，慢了点</a>			</div>			</li>    </ul>	</div>
+
+	<!--图文频道-->
+	<div class="tuwen-pd mob-hidden">		<h4>博主相册</h4>			<ul >				<li>							<a  class="orange-text" href="/Home/Index/picture/id/1.html" title="杨青个人博客">							<img class="img-circle" alt="杨青个人博客" src="picture/2016411192233455.jpg" title="杨青个人博客"/>							</a>					</li><li>							<a  class="orange-text" href="/Home/Index/picture/id/2.html" title="卢松松博客">							<img class="img-circle" alt="卢松松博客" src="picture/2016418225948574.jpg" title="卢松松博客"/>							</a>					</li><li>							<a  class="orange-text" href="/Home/Index/picture/id/3.html" title="个人博客主页欣赏">							<img class="img-circle" alt="个人博客主页欣赏" src="picture/20161225585ea5215cfc2.jpg" title="个人博客主页欣赏"/>							</a>					</li><li>							<a  class="orange-text" href="/Home/Index/picture/id/4.html" title="月光博客">							<img class="img-circle" alt="月光博客" src="picture/201701095872e61ed4a98.jpg" title="月光博客"/>							</a>					</li><li>							<a  class="orange-text" href="/Home/Index/picture/id/5.html" title="全球中文网站前5排行榜">							<img class="img-circle" alt="全球中文网站前5排行榜" src="picture/201705085872e61ed4a98.jpg" title="全球中文网站前5排行榜"/>							</a>					</li><li>							<a  class="orange-text" href="/Home/Index/picture/id/6.html" title="laravel框架个人博客系统">							<img class="img-circle" alt="laravel框架个人博客系统" src="picture/2017061559425a3e45e41.jpg" title="laravel框架个人博客系统"/>							</a>					</li><li>							<a  class="orange-text" href="/Home/Index/picture/id/7.html" title="企业招聘前端工程师面试题">							<img class="img-circle" alt="企业招聘前端工程师面试题" src="picture/201708155992a4329eefe.jpg" title="企业招聘前端工程师面试题"/>							</a>					</li>			</ul>	</div>		<!--数据统计-->
+	<div class="data-count ">
+		<h4>数据统计</h4>
+		<ul>
+
+			<li><span><i class="el-picture"></i>图片数量：</span><a title="共有 20 张图片">20</a> 张</li>
+			<li><span><i class="el-headphones"></i>说说数量：</span><a title="共有 35 条说说">35</a> 条</li>
+			<li><span><i class="el-pencil"></i>文章数量：</span><a title="共有 79 篇文章">79</a> 篇</li>
+			<li><span><i class="el-comment"></i>留言数量：</span><a title="共有 69 条留言">69</a> 条</li>
+			<li><span><i class="el-comment-alt"></i>评论数量：</span><a title="共有 18 条评论">18</a> 条</li>
+			<li><span><i class="el-paper-clip"></i>素材个数：</span><a title="共有 18 个">18</a> 个</li>
+			<li><span><i class="el-cog"></i>运行天数：</span><a title="雷小天博客 已正常运行 617 天">617</a> 天</li>
+
+			<li><span><i class="el-adjust-alt"></i>访问统计：</span><a title="累计访问"></a> 次</a></li>
+
+			<!--<li><span><i class="el-arrow-up"></i>4天前 12:15</span><a title="晓晓 最后更新了文章" >更新了<b class="lable">文章</b></a></li>-->
+
+		</ul>
+	</div>
+
+	</div>
+	<!--底部导航-->
+	<div class="foot-nav">
+		<div class="copy-right"><span >CopyRight &#169; 2015-2017 雷小天博客 &#160;Design by Lei</span></div>
+		<div class="bottom-nav">
+			<span><a href="http://www.100txy.com/sitemap.xml" target="_blank">网站地图</a>-<a href="http://www.miitbeian.gov.cn/state/outPortal/loginPortal.action"> 粤ICP备16001325号-1</a></span>
+		</div>
+	</div>
+<div  id="toTop">Back to Top</div>
+<script>
+window.onload=function(){
+	$(".img_loading").removeClass("img_loading");
+	$(".silde-title").show();
+}
+    // 替换
+    document.body.innerHTML = document.body.innerHTML.replace(/\[Q([0-9]*)\]/g, "<img src='picture/$1.gif'/>");
+    document.body.innerHTML = document.body.innerHTML.replace(/\[yc_([0-9]*)\]/g,"<img src='picture/$1.gif'/>");
+    document.body.innerHTML = document.body.innerHTML.replace(/\[ali_([0-9]*)\]/g,"<img src='picture/$1.gif'/>");
+</script>
+
+
+</footer>
+<!---返回顶部-->
+<!--换肤--->
+
+<div class="select-skin">
+<div class="skin-btn">
+    <a href="javascript:void(0);" class="skin-btn-open">换<br>肤</a>
+</div>
+
+<div class="skin-content">
+    <h1>选择风格<span class="skin-close">关闭</span></h1>
+    <div class="skin-content-list">
+        <div class="skin-list"><a href="#" onclick="setActiveStyleSheet('qingxin'); return false;" class="btn1">清新</a></div>
+        <div class="skin-list"><a href="#" onclick="setActiveStyleSheet('jianyue'); return false;" class="btn2">简约</a></div>
+		 <div class="skin-list"><a href="#" onclick="setActiveStyleSheet('qingshuang'); return false;" class="btn3">清爽</a></div>
+    </div>
+</div>
+</div>
+<!---END 底部开始-->
+
+    <!-- <p><a href="javascript:void(0)" onClick="dashangToggle()" class="dashang" title="打赏，支持一下">APP下载</a></p> -->
+    <div class="hide_box"></div>
+    <div class="shang_box">
+    	<a class="shang_close" href="javascript:void(0)" onClick="dashangToggle()" title="关闭"><img src="picture/close.jpg" alt="取消" /></a>
+        <img class="shang_logo" src="picture/logo2.png" alt="雷小天" />
+    	<div class="shang_tit">
+    		<p>感谢您的支持，我会继续努力的!</p>
+    	</div>
+    	<div class="shang_payimg">
+    		<img src="picture/alipayimg.jpg" alt="扫码查看" title="扫一扫" />
+    	</div>
+
+    		<div class="pay_explain">1元=1金币，支付后关注公众号联系站长</div>
+
+    	<div class="shang_payselect">
+    		<div class="pay_item checked" data-id="alipay">
+	    		<span class="radiobox"></span>
+	    		<span class="pay_logo"><img src="picture/alipay.jpg" alt="支付宝" /></span>
+    		</div>
+    		<div class="pay_item" data-id="weipay">
+	    		<span class="radiobox"></span>
+	    		<span class="pay_logo"><img src="picture/wechat.jpg" alt="微信" /></span>
+    		</div>
+    	</div>
+    </div>
+ <!-- 手机端 -->
+ <div class="shang_box_wap">
+
+   <a class="shang_close" href="javascript:void(0)" onClick="dashangToggle()" title="关闭"><img src="picture/close.jpg" alt="取消" /></a>
+   <div class="shang_tit">
+
+     <p>感谢您的支持，我会继续努力的!</p>
+
+   </div>
+
+   <div class="shang_payimg">
+
+     <img src="picture/alipayimg.jpg" alt="扫码查看" title="扫一扫" />
+
+   </div>
+
+
+     <div class="pay_explain">长按二维码打赏，你说多少就多少</div>
+
+
+   <div class="shang_payselect">
+
+     <div class="pay_item checked" data-id="alipay">
+
+       <span class="radiobox"></span>
+
+       <span class="pay_logo"><img src="picture/alipay.jpg" alt="支付宝" /></span>
+
+     </div>
+
+     <div class="pay_item" data-id="weipay">
+
+       <span class="radiobox"></span>
+
+       <span class="pay_logo"><img src="picture/wechat.jpg" alt="微信" /></span>
+
+     </div>
+
+   </div>
+
+ </div>
+<!-- 手机端end -->
+
+    <script type="text/javascript">
+    $(function(){
+    	$(".pay_item").click(function(){
+    		$(this).addClass('checked').siblings('.pay_item').removeClass('checked');
+    		var dataid=$(this).attr('data-id');
+    		$(".shang_payimg img").attr("src","/Template/xiao/Home/Public/images/icon/"+dataid+"img.jpg");
+    		$("#shang_pay_txt").text(dataid=="alipay"?"支付宝":"微信");
+    	});
+    });
+    function dashangToggle(){
+    	$(".hide_box").fadeToggle();      var is_pc=IsPC();
+      if(is_pc==true){
+        $(".shang_box").fadeToggle();
+      }else{
+         $(".shang_box_wap").fadeToggle();
+      }
+    }    // 判断是不是手机端
+    function IsPC() {
+        var userAgentInfo = navigator.userAgent;
+        var Agents = ["Android", "iPhone",
+                    "SymbianOS", "Windows Phone",
+                    "iPad", "iPod"];
+        var flag = true;
+        for (var v = 0; v < Agents.length; v++) {
+            if (userAgentInfo.indexOf(Agents[v]) > 0) {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
+    </script>
+<style type="text/css">
+.TY-login-window {
+	font-size:12px;
+	line-height:1.5;
+	font-family:"微软雅黑",Arial,Helvetica;
+	padding:15px;
+	/*background:#fff;
+	border-radius:6px;*/
+}
+.login-window-header {
+	height:65px;
+	overflow:hidden;
+	position:relative;
+	*zoom:1;
+}
+.loginWin-tab {
+	text-align:center;
+	margin-bottom:15px;
+}
+.loginWin-tab-list {
+	display:inline-block;
+	vertical-align:middle;
+	*display:inline;
+	*zoom:1;
+}
+.loginWin-tab-list li {
+	float:left;
+	display:inline;
+	border-bottom:1px solid #aaa;
+	color:#aaa;
+	width:143px;
+	height:21px;
+	line-height:21px;
+}
+.loginWin-tab-list li span {
+	padding-left:16px;
+	/*background:url(images/loginwin_icons.png) no-repeat;*/
+	cursor:pointer;
+}
+.loginWin-tab-list .normal-login-tab span {
+	background-position:0 -159px;
+}
+.loginWin-tab-list .qrcode-login-tab span {
+	background-position:0 -95px;
+}
+.loginWin-account {
+	width:286px;
+	margin:0 auto 15px;
+}
+.loginWin-account-title {
+	color:#000;
+	font-size:14px;
+	margin-bottom:15px;
+	text-indent:10px;
+}
+.loginWin-account-list {
+	margin-right:-10px!important;
+	height:152px;
+	overflow:hidden;
+}
+.loginWin-account-list li {
+	float:left;
+	display:inline;
+	margin-right:10px;
+}
+.loginWin-account-list li a {
+	display:block;
+	padding:9px 10px;
+	line-height:20px;
+	width:118px;
+	color:#aaa;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	overflow:hidden;
+	text-decoration:none;
+}
+.loginWin-account-list li a:hover {
+	color:#308ee3;
+}
+.loginWin-account-list li.checked a {
+	color:#fff;
+	background:#308ee3;
+	border-radius:6px;
+}
+.loginWin-account-list li.checked a:hover {
+	color:#fff;
+}
+.loginWin-form {
+	color:#000;
+}
+.loginWin-login-form {
+	width:286px;
+	margin:0 auto;
+}
+.loginWin-login-form a,.loginWin-login-form a:link,.loginWin-login-form a:visited {
+	color:#308ee3;
+	text-decoration:none;
+}
+.loginWin-login-form a:hover,.loginWin-login-form a:active {
+	color:#308ee3;
+	text-decoration:underline;
+}
+.loginWin-form-item {
+	margin-bottom:10px;
+}
+.loginWin-form-item .input-text {
+	border:1px solid #aaa;
+	border-radius:6px;
+	padding:6px 12px;
+	width:286px;
+	height:38px;
+	line-height:38px;
+	outline:0 none;
+}
+.loginWin-form-item .input-text:focus {
+	border-color:#308ee3;
+}
+.loginWin-form-item .input-checkbox {
+	vertical-align:middle;
+	margin:-2px 4px 0 0;
+	outline:0 none;
+}
+.loginWin-submit-btn {
+	border:0 none;
+	width:286px;
+	height:38px;
+	line-height:38px;
+	font-size:16px;
+	color:#fff;
+	text-align:center;
+	background:#308ee3;
+	border-radius:6px;
+	cursor:pointer;
+	vertical-align:middle;
+	outline:0 none;
+}
+.loginWin-account-input,.loginWin-password-input {
+	position:relative;
+	*zoom:1;
+}
+.loginWin-account-input .input-text,.loginWin-password-input .input-text {
+	padding-left:42px;
+	width:286;
+}
+.loginWin-account-input label,.loginWin-password-input label {
+	position:absolute;
+	width:24px;
+	height:24px;
+	font-size:0;
+	line-height:0;
+	left:12px;
+	top:6px;
+	background:url(images/loginwin_icons.png) no-repeat;
+}
+.fr {
+    float: right;
+    display: inline;
+}
+.loginWin-account-input label {
+	background-position:0 -256px;
+}
+.loginWin-password-input label {
+	background-position:0 -338px;
+}
+.loginWin-account-input .input-text:focus ~ label {
+	background-position:0 -296px;
+}
+.loginWin-password-input .input-text:focus ~ label {
+	background-position:0 -381px;
+}
+.switch-login-toggle,.normal-login-toggle {
+	color:#f9a30f;
+	padding-left:15px;
+	/*background:url(images/loginwin_icons.png) no-repeat;*/
+	cursor:pointer;
+}
+.normal-login-toggle {
+	background-position:0 -190px;
+}
+.switch-login-toggle {
+	background-position:0 -223px;
+}
+.loginWin-qrcode {
+	margin-top:50px;
+	height:273px;
+}
+.loginWin-qrcode-box {
+	width:180px;
+	padding-left:216px;
+	margin:0 auto;
+	text-align:center;
+	/*background:url(images/loginwin_qrcode_bg.png) no-repeat;*/
+	position:relative;
+	*zoom:1;
+}
+.loginWin-third {
+	width:286px;
+	margin:20px auto 0;
+}
+.loginWin-third-title {
+	text-align:center;
+	margin-bottom:20px;
+	position:relative;
+	*zoom:1;
+}
+.loginWin-third-title:before {
+	content:"";
+	width:100%;
+	height:1px;
+	background:#aaa;
+	position:absolute;
+	top:50%;
+	left:0;
+}
+.loginWin-third-title span {
+	padding:0 10px;
+	color:#aaa;
+	background:#fff;
+	position:relative;
+	*zoom:1;
+}
+.loginWin-third-list {
+	margin-right:-53px!important;
+	overflow:hidden;
+}
+.loginWin-third-list li {
+	float:left;
+	display:inline;
+	width:60px;
+	height:60px;
+	margin-right:53px;
+}
+.loginWin-third-list li a {
+	display:block;
+	width:60px;
+	height:60px;
+	background:url(images/loginwin_third.png) no-repeat;
+}
+.loginWin-third-list .weixin-login {
+	background-position:0 0;
+}
+.loginWin-third-list .qq-login {
+	background-position:0 -60px;
+}
+.loginWin-third-list .weibo-login {
+	background-position:0 -120px;
+}
+/*手机端登录*/
+.loginwap-third-list li {
+	float:left;
+	display:inline;
+	width:33.333%;
+	height:40px;
+	/*margin-right:32%;*/
+}
+.loginwap-third-list li a {
+	display:block;
+	width:40px;
+	height:40px;
+	margin-left: 34.76%;
+	background:url(images/loginwap_third.png) no-repeat;
+}
+.loginwap-third-list .weixin-login {
+	background-position:0 0;
+}
+.loginwap-third-list .qq-login {
+	background-position:0 -40px;
+}
+.loginwap-third-list .weibo-login {
+	background-position:0 -80px;
+}
+
+#loginWin_content_wrapper {
+	padding:10px 0;
+}
+.loginWin-switch-login-wrapper .loginWin-tab,.loginWin-switch-login-wrapper .loginWin-qrcode,.loginWin-switch-login-wrapper .loginWin-third,.loginWin-switch-login-wrapper .loginWin-account-input,.loginWin-switch-login-wrapper .loginWin-register-link,.loginWin-switch-login-wrapper .switch-login-toggle {
+	display:none;
+}
+.loginWin-normal-login-wrapper .loginWin-account,.loginWin-normal-login-wrapper .loginWin-qrcode,.loginWin-normal-login-wrapper .normal-login-toggle {
+	display:none;
+}
+.loginWin-normal-login-wrapper .normal-login-tab {
+	border-bottom-color:#308ee3;
+	color:#308ee3;
+}
+.loginWin-normal-login-wrapper .normal-login-tab span {
+	background-position:0 -127px;
+	cursor:text;
+}
+.loginWin-qrcode-login-wrapper .loginWin-account,.loginWin-qrcode-login-wrapper .loginWin-form,.loginWin-qrcode-login-wrapper .loginWin-third {
+	display:none;
+}
+.loginWin-qrcode-login-wrapper .qrcode-login-tab {
+	border-bottom-color:#308ee3;
+	color:#308ee3;
+}
+.loginWin-qrcode-login-wrapper .qrcode-login-tab span {
+	background-position:0 -64px;
+	cursor:text;
+}
+</style>
+<div class="hide_box2"></div>
+<div class="shang_box2">
+  <a class="shang_close2" href="javascript:void(0)" onClick="dashangToggle2()" title="关闭"><img src="picture/close.jpg" alt="取消" /></a>
+    <img class="shang_logo2" src="picture/logo2.png" alt="雷小天博客" />
+  <!-- <div class="ty-content clearfix shang_box2" style="padding:0;"> -->
+    <div class="TY-login-window">
+
+      <div class="login-window-body">
+        <div id="loginWin_content_wrapper" class="loginWin-normal-login-wrapper">
+          <div class="loginWin-tab">
+            <ul class="loginWin-tab-list cf">
+              <li class="normal-login-tab"><span>普通登录</span></li>
+              <li class="qrcode-login-tab"><span>扫码登录</span></li>
+            </ul>
+          </div>
+          <div class="loginWin-form">
+            <form class="loginWin-login-form" id="topguideloginform" name="topguideloginform" method="post" action="javascript::void(0);" accept-charset="UTF-8" target="_top">
+              <div class="loginWin-form-item loginWin-account-input"><input type="text" class="input-text" id="vwriter" name="vwriter" placeholder="用户名/手机/邮箱" autocomplete="off">
+                <input type="hidden" id="user_action" name="action" value="f7.1483930809431.111114|b2de5928fa17c27cadcda46f7cd0197f|d41d8cd98f00b204e9800998ecf8427e|Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36|0|9|v2.2"><label for="vwriter"></label>
+              </div>
+              <div class="loginWin-form-item loginWin-password-input">
+                <input type="password" class="input-text" id="vpassword" name="vpassword" placeholder="密码"><label for="vpassword"></label>
+              </div>
+              <div class="loginWin-form-item cf"><label class="fl">
+                <input type="checkbox" class="input-checkbox" id="rmflag" name="rmflag" value="1" checked="checked">下次自动登录</label><a class="loginWin-password-link fr" href="javascript::void(0);" onclick="return alert('暂不开放！');" target="_blank">忘记密码？</a>
+              </div>
+              <div class="loginWin-form-item"><button type="submit" onclick="return alert('暂不开放，请选择第三方！');" class="loginWin-submit-btn">登 录</button>
+              </div>
+              <div class="cf"><a class="loginWin-register-link fl" href="javascript::void(0);" onclick="return alert('暂不开放，请选择第三方！');" target="_blank">立即注册</a><span class="normal-login-toggle fr">返回登录</span>
+              </div>
+            </form>
+            </div>
+            <div class="loginWin-third"><p class="loginWin-third-title"><span>使用第三方账号登录</span></p>
+              <ul class="loginWin-third-list cf">
+                <li><a class="weixin-login" title="微信账号登录" href="/Home/User/oauth_login/type/wechat.html"></a></li>
+                <li><a class="qq-login" title="QQ账号登录" href="/Home/User/oauth_login/type/qq.html"></a></li>
+                <li><a class="weibo-login" title="新浪微博账号登录" href="/Home/User/oauth_login/type/sina.html"></a></li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    <!-- </div> -->
+
+    <!-- <ul class="row">
+        <li class="col-xs-6 col-md-4 col-lg-4 b-login-img">
+            <a href="/Home/User/oauth_login/type/qq.html"><img src="picture/qq-login.png" alt="QQ登录" title="QQ登录"></a>
+        </li>
+        <li class="col-xs-6 col-md-4 col-lg-4 b-login-img">
+            <a href="/Home/User/oauth_login/type/sina.html"><img src="picture/sina-login.png" alt="微博登录" title="微博登录"></a>
+        </li>
+        <li class="col-xs-6 col-md-4 col-lg-4 b-login-img">
+            <a href="/Home/User/oauth_login/type/douban.html"><img src="picture/douban-login.png" alt="豆瓣登录" title="豆瓣登录"></a>
+        </li>
+        <li class="col-xs-6 col-md-4 col-lg-4 b-login-img">
+            <a href="/Home/User/oauth_login/type/renren.html"><img src="picture/renren-login.png" alt="人人登录" title="人人登录"></a>
+        </li>
+        <li class="col-xs-6 col-md-4 col-lg-4 b-login-img">
+            <a href="/Home/User/oauth_login/type/kaixin.html"><img src="picture/kaixin-login.png" alt="开心网登录" title="开心网登录"></a>
+        </li>
+        <li class="col-xs-6 col-md-4 col-lg-4 b-login-img">
+            <a href="/Home/User/oauth_login.html"><img src="" alt="待定" title="待定"></a>
+        </li>
+    </ul> -->
+
+</div>
+<script type="text/javascript">
+function dashangToggle2(){
+  $(".hide_box2").fadeToggle();
+  $(".shang_box2").fadeToggle();
+}
+</script>
+
+</body>
+</html>

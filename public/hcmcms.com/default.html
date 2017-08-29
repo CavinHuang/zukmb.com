@@ -1,0 +1,596 @@
+﻿<!DOCTYPE html>
+<html lang="zh_CN" style="overflow: hidden;">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+    <meta charset="utf-8">
+    <title>ThinkCMF 后台管理中心</title>
+
+    <meta name="description" content="This is page-header (.page-header &gt; h1)">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/simplebootadmin.css" rel="stylesheet">
+    <link href="css/font-awesome.min_1.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/simplebootadminindex.min.css">
+    <style>
+        /*-----------------导航hack--------------------*/
+        .nav-list > li.open {
+            position: relative;
+        }
+
+        .nav-list > li.open .back {
+            display: none;
+        }
+
+        .nav-list > li.open .normal {
+            display: inline-block !important;
+        }
+
+        .nav-list > li.open a {
+            padding-left: 7px;
+        }
+
+        .nav-list > li .submenu > li > a {
+            background: #fff;
+        }
+
+        .nav-list > li .submenu > li a > [class*="fa-"]:first-child {
+            left: 20px;
+        }
+
+        .nav-list > li ul.submenu ul.submenu > li a > [class*="fa-"]:first-child {
+            left: 30px;
+        }
+
+        /*----------------导航hack--------------------*/
+    </style>
+
+    <script>
+        //全局变量
+        var GV = {
+            HOST: "hcmcms.com",
+            ROOT: "/",
+            WEB_ROOT: "/",
+            JS_ROOT: "static/js/"
+        };
+    </script>
+            <style>
+            #think_page_trace_open {
+                left: 0 !important;
+                right: initial !important;
+            }
+        </style>
+    
+</head>
+
+<body style="min-width:900px;overflow: hidden;">
+<div id="loading"><i class="loadingicon"></i><span>正在加载...</span></div>
+<div id="right-tools-wrapper">
+    <!--<span id="right_tools_clearcache" title="清除缓存" onclick="javascript:openapp('/admin/setting/clearcache.html','right_tool_clearcache','清除缓存');"><i class="fa fa-trash-o right_tool_icon"></i></span>-->
+    <span id="refresh-wrapper" title="REFRESH_CURRENT_PAGE"><i
+            class="fa fa-refresh right_tool_icon"></i></span>
+</div>
+<div class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="/admin/index/index.html" class="navbar-brand" style="min-width: 200px;text-align: center;">ThinkCMF</a>
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <div class="navbar-collapse collapse" id="navbar-main">
+            <div class="pull-left" style="position: relative;">
+                <a id="task-pre" class="task-changebt"><i class="fa fa-chevron-left"></i></a>
+                <div id="task-content">
+                    <ul class="nav navbar-nav cmf-component-tab" id="task-content-inner">
+                        <li class="cmf-component-tabitem noclose" app-id="0" app-url="/admin/main/index.html"
+                            app-name="首页">
+                            <a class="cmf-tabs-item-text">首页</a>
+                        </li>
+                    </ul>
+                    <div style="clear:both;"></div>
+                </div>
+                <a id="task-next" class="task-changebt"><i class="fa fa-chevron-right"></i></a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right simplewind-nav">
+                <li class="light-blue dropdown">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                                                    <img class="nav-user-photo" width="30" height="30"
+                                 src="picture/logo-18.png" alt="admin">
+                                                <span class="user-info">
+								欢迎, admin							</span>
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret dropdown-closer">
+                                                    <li>
+                                <a href="javascript:openapp('/admin/setting/site.html','index_site','网站信息');"><i
+                                        class="fa fa-cog"></i> 网站信息</a></li>
+                                                    <li>
+                                <a href="javascript:openapp('/admin/user/userinfo.html','index_userinfo','修改信息');"><i
+                                        class="fa fa-user"></i> 修改信息</a></li>
+                                                    <li>
+                                <a href="javascript:openapp('/admin/setting/password.html','index_password','修改密码');"><i
+                                        class="fa fa-lock"></i> 修改密码</a></li>
+                                                <li><a href="/admin/public/logout.html"><i class="fa fa-sign-out"></i> 退出</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="main-container container-fluid">
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+            <a class="btn btn-sm btn-warning" href="/" title="网站首页" target="_blank">
+                <i class="fa fa-home"></i>
+            </a>
+            <!--
+                            <a class="btn btn-sm btn-success" href="javascript:openapp('/portal/admin_category/index.html','index_termlist','文章分类管理');" title="文章分类管理">
+                    <i class="fa fa-th"></i>
+                </a>
+                            <a class="btn btn-sm btn-info" href="javascript:openapp('/portal/admin_article/index.html','index_postlist','文章管理');" title="文章管理">
+                    <i class="fa fa-pencil"></i>
+                </a>
+                        -->
+
+                            <a class="btn btn-sm btn-info"
+                   href="javascript:openapp('/user/admin_asset/index.html','userAdminAssetindex','资源管理',true);"
+                   title="资源管理">
+                    <i class="fa fa-file"></i>
+                </a>
+                            <a class="btn btn-sm btn-danger"
+                   href="javascript:openapp('/admin/setting/clearcache.html','index_clearcache','清除缓存',true);"
+                   title="清除缓存">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+                            <a class="btn btn-sm btn-danger"
+                   href="javascript:openapp('/admin/recycle_bin/index.html','index_recycle','回收站',true);"
+                   title="回收站">
+                    <i class="fa fa-recycle"></i>
+                </a>
+                            <a class="btn btn-sm btn-default"
+                   href="javascript:openapp('/admin/menu/index.html','index_menu','后台菜单',true);"
+                   title="后台菜单">
+                    <i class="fa fa-list"></i>
+                </a>
+            
+        </div>
+        <div id="nav-wrapper">
+            <ul class="nav nav-list">
+                        <li>
+                        <a href="#" class="dropdown-toggle">
+                <i class="fa fa-cogs normal"></i>
+                <span class="menu-text normal"> 设置 </span>
+                <b class="arrow fa fa-angle-right normal"></b>
+                <i class="fa fa-reply back"></i>
+                <span class="menu-text back">返回</span>
+
+            </a>
+
+            <ul class="submenu">
+                    <li>
+                <a href="javascript:openapp('/admin/setting/site.html','70admin','网站信息',true);">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									网站信息								</span>
+        </a>
+        
+    </li>
+
+        <li>
+                <a href="javascript:openapp('/admin/mailer/index.html','14admin','邮箱配置',true);">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									邮箱配置								</span>
+        </a>
+        
+    </li>
+
+        <li>
+                <a href="javascript:openapp('/admin/theme/index.html','94admin','模板管理',true);">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									模板管理								</span>
+        </a>
+        
+    </li>
+
+        <li>
+                <a href="javascript:openapp('/admin/nav/index.html','28admin','导航管理',true);">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									导航管理								</span>
+        </a>
+        
+    </li>
+
+        <li>
+                <a href="javascript:openapp('/admin/slide/index.html','77admin','幻灯片管理',true);">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									幻灯片管理								</span>
+        </a>
+        
+    </li>
+
+        <li>
+                <a href="javascript:openapp('/admin/link/index.html','6admin','友情链接',true);">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									友情链接								</span>
+        </a>
+        
+    </li>
+
+        <li>
+                <a href="javascript:openapp('/admin/route/index.html','60admin','URL美化',true);">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									URL美化								</span>
+        </a>
+        
+    </li>
+
+        <li>
+                <a href="javascript:openapp('/admin/setting/upload.html','74admin','上传设置',true);">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									上传设置								</span>
+        </a>
+        
+    </li>
+
+        <li>
+                <a href="javascript:openapp('/admin/storage/index.html','92admin','文件存储',true);">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									文件存储								</span>
+        </a>
+        
+    </li>
+
+                </ul>
+            
+        </li>
+
+                <li>
+                        <a href="#" class="dropdown-toggle">
+                <i class="fa fa-group normal"></i>
+                <span class="menu-text normal"> 用户管理 </span>
+                <b class="arrow fa fa-angle-right normal"></b>
+                <i class="fa fa-reply back"></i>
+                <span class="menu-text back">返回</span>
+
+            </a>
+
+            <ul class="submenu">
+                    <li>
+                <a href="#" class="dropdown-toggle">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									管理组								</span>
+            <b class="arrow fa fa-angle-right"></b>
+        </a>
+        <ul class="submenu">
+                <li>
+        
+        <a href="javascript:openapp('/admin/rbac/index.html','49admin','角色管理',true);">
+            &nbsp;<i class="fa fa-angle-double-right"></i>
+            <span class="menu-text">
+								角色管理							</span>
+        </a>
+    </li>
+
+        <li>
+        
+        <a href="javascript:openapp('/admin/user/index.html','109admin','管理员',true);">
+            &nbsp;<i class="fa fa-angle-double-right"></i>
+            <span class="menu-text">
+								管理员							</span>
+        </a>
+    </li>
+
+            </ul>
+        
+    </li>
+
+        <li>
+                <a href="#" class="dropdown-toggle">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									用户组								</span>
+            <b class="arrow fa fa-angle-right"></b>
+        </a>
+        <ul class="submenu">
+                <li>
+        
+        <a href="javascript:openapp('/user/admin_index/index.html','152user','本站用户',true);">
+            &nbsp;<i class="fa fa-angle-double-right"></i>
+            <span class="menu-text">
+								本站用户							</span>
+        </a>
+    </li>
+
+        <li>
+        
+        <a href="javascript:openapp('/user/admin_oauth/index.html','155user','第三方用户',true);">
+            &nbsp;<i class="fa fa-angle-double-right"></i>
+            <span class="menu-text">
+								第三方用户							</span>
+        </a>
+    </li>
+
+            </ul>
+        
+    </li>
+
+                </ul>
+            
+        </li>
+
+                <li>
+                        <a href="#" class="dropdown-toggle">
+                <i class="fa fa-cloud normal"></i>
+                <span class="menu-text normal"> 插件管理 </span>
+                <b class="arrow fa fa-angle-right normal"></b>
+                <i class="fa fa-reply back"></i>
+                <span class="menu-text back">返回</span>
+
+            </a>
+
+            <ul class="submenu">
+                    <li>
+                <a href="javascript:openapp('/admin/hook/index.html','2admin','钩子管理',true);">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									钩子管理								</span>
+        </a>
+        
+    </li>
+
+        <li>
+                <a href="javascript:openapp('/admin/plugin/index.html','41admin','所有插件',true);">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									所有插件								</span>
+        </a>
+        
+    </li>
+
+                </ul>
+            
+        </li>
+
+                <li>
+                        <a href="#" class="dropdown-toggle">
+                <i class="fa fa-th normal"></i>
+                <span class="menu-text normal"> 门户管理 </span>
+                <b class="arrow fa fa-angle-right normal"></b>
+                <i class="fa fa-reply back"></i>
+                <span class="menu-text back">返回</span>
+
+            </a>
+
+            <ul class="submenu">
+                    <li>
+                <a href="javascript:openapp('/portal/admin_article/index.html','120portal','文章管理',true);">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									文章管理								</span>
+        </a>
+        
+    </li>
+
+        <li>
+                <a href="javascript:openapp('/portal/admin_category/index.html','130portal','分类管理',true);">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									分类管理								</span>
+        </a>
+        
+    </li>
+
+        <li>
+                <a href="javascript:openapp('/portal/admin_page/index.html','138portal','页面管理',true);">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									页面管理								</span>
+        </a>
+        
+    </li>
+
+        <li>
+                <a href="javascript:openapp('/portal/admin_tag/index.html','144portal','文章标签',true);">
+            <i class="fa fa-caret-right"></i>
+            <span class="menu-text">
+									文章标签								</span>
+        </a>
+        
+    </li>
+
+                </ul>
+            
+        </li>
+
+                    </ul>
+        </div>
+
+    </div>
+
+    <div class="main-content">
+        <div class="page-content" id="content">
+            <iframe src="/admin/main/index.html" style="width:100%;height: 100%;" frameborder="0" id="appiframe-0"
+                    class="appiframe"></iframe>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/wind.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/adminindex.js"></script>
+<script>
+    $(function () {
+        $("[data-toggle='tooltip']").tooltip();
+        $("li.dropdown").hover(function () {
+            $(this).addClass("open");
+        }, function () {
+            $(this).removeClass("open");
+        });
+    });
+
+    var ismenumin = $("#sidebar").hasClass("menu-min");
+    $(".nav-list").on("click", function (event) {
+        var closest_a = $(event.target).closest("a");
+        if (!closest_a || closest_a.length == 0) {
+            return
+        }
+        if (!closest_a.hasClass("dropdown-toggle")) {
+            if (ismenumin && "click" == "tap" && closest_a.get(0).parentNode.parentNode == this) {
+                var closest_a_menu_text = closest_a.find(".menu-text").get(0);
+                if (event.target != closest_a_menu_text && !$.contains(closest_a_menu_text, event.target)) {
+                    return false
+                }
+            }
+            return
+        }
+        var closest_a_next = closest_a.next().get(0);
+        if (!$(closest_a_next).is(":visible")) {
+            var closest_ul = $(closest_a_next.parentNode).closest("ul");
+            if (ismenumin && closest_ul.hasClass("nav-list")) {
+                return
+            }
+            closest_ul.find("> .open > .submenu").each(function () {
+                if (this != closest_a_next && !$(this.parentNode).hasClass("active")) {
+                    $(this).slideUp(150).parent().removeClass("open")
+                }
+            });
+        }
+        if (ismenumin && $(closest_a_next.parentNode.parentNode).hasClass("nav-list")) {
+            return false;
+        }
+        $(closest_a_next).slideToggle(150).parent().toggleClass("open");
+        return false;
+    });
+</script>
+<div id="think_page_trace" style="position: fixed;bottom:0;right:0;font-size:14px;width:100%;z-index: 999999;color: #000;text-align:left;font-family:'微软雅黑';">
+    <div id="think_page_trace_tab" style="display: none;background:white;margin:0;height: 250px;">
+        <div id="think_page_trace_tab_tit" style="height:30px;padding: 6px 12px 0;border-bottom:1px solid #ececec;border-top:1px solid #ececec;font-size:16px">
+                        <span style="color:#000;padding-right:12px;height:30px;line-height:30px;display:inline-block;margin-right:3px;cursor:pointer;font-weight:700">基本</span>
+                        <span style="color:#000;padding-right:12px;height:30px;line-height:30px;display:inline-block;margin-right:3px;cursor:pointer;font-weight:700">文件</span>
+                        <span style="color:#000;padding-right:12px;height:30px;line-height:30px;display:inline-block;margin-right:3px;cursor:pointer;font-weight:700">流程</span>
+                        <span style="color:#000;padding-right:12px;height:30px;line-height:30px;display:inline-block;margin-right:3px;cursor:pointer;font-weight:700">错误</span>
+                        <span style="color:#000;padding-right:12px;height:30px;line-height:30px;display:inline-block;margin-right:3px;cursor:pointer;font-weight:700">SQL</span>
+                        <span style="color:#000;padding-right:12px;height:30px;line-height:30px;display:inline-block;margin-right:3px;cursor:pointer;font-weight:700">调试</span>
+                    </div>
+        <div id="think_page_trace_tab_cont" style="overflow:auto;height:212px;padding:0;line-height: 24px">
+                        <div style="display:none;">
+                <ol style="padding: 0; margin:0">
+                    <li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">请求信息 : 2017-08-29 15:01:54 HTTP/1.1 GET : hcmcms.com/admin/index/index.html</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">运行时间 : 0.136861s [ 吞吐率：7.31req/s ] 内存消耗：5,097.03kb 文件加载：74</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">查询信息 : 33 queries 0 writes </li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">缓存信息 : 0 reads,0 writes</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">配置加载 : 66</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">会话信息 : SESSION_ID=dtr8bb7d2ptbt72jmh1smbd9q7</li>                </ol>
+            </div>
+                        <div style="display:none;">
+                <ol style="padding: 0; margin:0">
+                    <li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\public\index.php ( 1.21 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\base.php ( 2.60 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Loader.php ( 18.92 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\vendor\composer\autoload_namespaces.php ( 0.15 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\vendor\composer\autoload_psr4.php ( 0.52 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\vendor\composer\autoload_classmap.php ( 0.79 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\vendor\composer\autoload_files.php ( 0.43 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\vendor\topthink\think-helper\src\helper.php ( 1.82 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\vendor\topthink\think-captcha\src\helper.php ( 1.59 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Route.php ( 58.04 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Config.php ( 5.86 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Validate.php ( 39.02 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\vendor\qiniu\php-sdk\src\Qiniu\functions.php ( 7.10 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\vendor\qiniu\php-sdk\src\Qiniu\Config.php ( 0.70 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Error.php ( 3.47 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\convention.php ( 9.91 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\App.php ( 20.03 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Request.php ( 48.04 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\app\config.php ( 9.26 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\data\conf\config.php ( 0.06 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\app\database.php ( 0.74 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\data\conf\database.php ( 0.49 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\app\debug.php ( 0.69 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Hook.php ( 4.63 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\app\tags.php ( 1.22 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Env.php ( 1.05 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\cmf\common.php ( 43.97 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\helper.php ( 17.29 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Debug.php ( 6.80 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\cmf\behavior\InitHookBehavior.php ( 1.15 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Db.php ( 6.39 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Log.php ( 5.58 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\db\connector\Mysql.php ( 4.07 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\db\Connection.php ( 28.97 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\db\Query.php ( 86.64 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\db\builder\Mysql.php ( 2.09 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\db\Builder.php ( 29.31 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Collection.php ( 8.26 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Lang.php ( 6.74 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\lang\zh-cn.php ( 3.78 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\app\route.php ( 0.76 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\data\conf\route.php ( 0.02 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\cmf\behavior\LangBehavior.php ( 1.17 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\cmf\lang\zh-cn.php ( 3.08 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\app\admin\lang\zh-cn\common.php ( 0.60 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\app\portal\lang\zh-cn\common.php ( 0.72 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\app\admin\lang\zh-cn.php ( 9.16 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\app\admin\controller\IndexController.php ( 1.57 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\cmf\controller\AdminBaseController.php ( 3.39 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\cmf\controller\BaseController.php ( 2.31 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Controller.php ( 5.99 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\traits\controller\Jump.php ( 4.82 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Cache.php ( 5.96 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\cache\driver\File.php ( 6.73 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\cache\Driver.php ( 5.24 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\View.php ( 6.63 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\view\driver\Think.php ( 5.45 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Template.php ( 45.34 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\template\driver\File.php ( 2.17 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Session.php ( 10.82 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\cmf\behavior\AdminLangBehavior.php ( 1.38 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\app\admin\lang\zh-cn\admin_menu.php ( 8.30 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\app\admin\lang\zh-cn\admin.php ( 0.62 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\app\user\lang\zh-cn\admin_menu.php ( 1.00 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\app\admin\model\AdminMenuModel.php ( 6.98 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Model.php ( 62.17 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\model\Collection.php ( 2.67 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Url.php ( 12.44 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\cmf\lib\taglib\Cmf.php ( 11.06 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\template\TagLib.php ( 12.31 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\template\taglib\Cx.php ( 23.82 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\data\runtime\temp\26ebf03964cec95acd9753a63cc637d4.php ( 14.84 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\Response.php ( 8.24 KB )</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\library\think\debug\Html.php ( 4.16 KB )</li>                </ol>
+            </div>
+                        <div style="display:none;">
+                <ol style="padding: 0; margin:0">
+                    <li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ DB ] INIT mysql</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ BEHAVIOR ] Run cmf\behavior\InitHookBehavior @app_init [ RunTime:0.022261s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ LANG ] F:\www\phpptoject\thinkcmf-master\simplewind\thinkphp\lang\zh-cn.php</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ ROUTE ] array (
+  'type' =&gt; 'module',
+  'module' =&gt; 
+  array (
+    0 =&gt; 'admin',
+    1 =&gt; 'index',
+    2 =&gt; 'index',
+  ),
+)</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ HEADER ] array (
+  'cookie' =&gt; 'thinkphp_show_page_trace=0|0; PHPSESSID=dtr8bb7d2ptbt72jmh1smbd9q7; thinkphp_show_page_trace=0|0; admin_username=admin',
+  'accept-encoding' =&gt; 'gzip, deflate',
+  'accept-language' =&gt; 'zh-CN',
+  'user-agent' =&gt; 'mozilla/5.0 (windows nt 6.1) applewebkit/537.36 (khtml, like gecko) chrome/34.0.1847.131 safari/537.36',
+  'accept' =&gt; 'text/html, text/css',
+  'host' =&gt; 'hcmcms.com',
+)</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ PARAM ] array (
+)</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ LANG ] F:\www\phpptoject\thinkcmf-master\public/../simplewind/cmf/lang\zh-cn.php</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ LANG ] F:\www\phpptoject\thinkcmf-master\public/../app/admin\lang\zh-cn\common.php</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ LANG ] F:\www\phpptoject\thinkcmf-master\public/../app/portal\lang\zh-cn\common.php</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ BEHAVIOR ] Run cmf\behavior\LangBehavior @app_begin [ RunTime:0.002461s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ LANG ] F:\www\phpptoject\thinkcmf-master\public/../app/admin\lang\zh-cn.php</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ CACHE ] INIT File</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SESSION ] INIT array (
+  'id' =&gt; '',
+  'var_session_id' =&gt; '',
+  'prefix' =&gt; 'think',
+  'type' =&gt; '',
+  'auto_start' =&gt; true,
+)</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ LANG ] F:\www\phpptoject\thinkcmf-master\public/../app/admin\lang\zh-cn\admin_menu.php</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ LANG ] F:\www\phpptoject\thinkcmf-master\public/../app/admin\lang\zh-cn\admin.php</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ LANG ] F:\www\phpptoject\thinkcmf-master\public/../app/user\lang\zh-cn\admin_menu.php</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ BEHAVIOR ] Run cmf\behavior\AdminLangBehavior @admin_init [ RunTime:0.002645s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ RUN ] app\admin\controller\IndexController-&gt;index[ F:\www\phpptoject\thinkcmf-master\app\admin\controller\IndexController.php ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ VIEW ] themes/admin_simpleboot3/admin\index\index.html [ array (
+  0 =&gt; 'admin',
+  1 =&gt; 'menus',
+) ]</li>                </ol>
+            </div>
+                        <div style="display:none;">
+                <ol style="padding: 0; margin:0">
+                                    </ol>
+            </div>
+                        <div style="display:none;">
+                <ol style="padding: 0; margin:0">
+                    <li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ DB ] CONNECT:[ UseTime:0.010658s ] mysql:dbname=thinkcmf5;host=localhost;port=3306;charset=utf8</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SHOW COLUMNS FROM `cmf_hook_plugin` [ RunTime:0.000676s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT `hook`,`plugin` FROM `cmf_hook_plugin` WHERE  `status` = 1 ORDER BY list_order ASC [ RunTime:0.000267s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SHOW COLUMNS FROM `cmf_option` [ RunTime:0.000708s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT `option_value` FROM `cmf_option` WHERE  `option_name` = 'cdn_settings' LIMIT 1 [ RunTime:0.000240s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT `option_value` FROM `cmf_option` WHERE  `option_name` = 'admin_settings' LIMIT 1 [ RunTime:0.000234s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SHOW COLUMNS FROM `cmf_user` [ RunTime:0.000713s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_user` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000357s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SHOW COLUMNS FROM `cmf_admin_menu` [ RunTime:0.001789s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 0  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.002541s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 5  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.001783s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 70  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.000428s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 14  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.001981s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 94  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.002125s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 28  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.001776s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 77  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.001726s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 6  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.001661s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 60  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.001567s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 74  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.000346s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 92  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.000433s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 108  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.002203s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 48  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.001722s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 49  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.001607s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 109  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.001631s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 151  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.002182s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 152  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.001724s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 155  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.000528s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 1  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.002504s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 2  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.002037s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 41  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.001782s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 119  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.001771s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 120  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.001562s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 130  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.001822s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 138  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.002357s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_admin_menu` WHERE  `parent_id` = 144  AND `status` = 1 ORDER BY `list_order`  ASC [ RunTime:0.001577s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT * FROM `cmf_user` WHERE  `id` = 1 LIMIT 1 [ RunTime:0.000315s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT `option_value` FROM `cmf_option` WHERE  `option_name` = 'admin_settings' LIMIT 1 [ RunTime:0.000324s ]</li><li style="border-bottom:1px solid #EEE;font-size:14px;padding:0 12px">[ SQL ] SELECT `option_value` FROM `cmf_option` WHERE  `option_name` = 'admin_settings' LIMIT 1 [ RunTime:0.000367s ]</li>                </ol>
+            </div>
+                        <div style="display:none;">
+                <ol style="padding: 0; margin:0">
+                                    </ol>
+            </div>
+                    </div>
+    </div>
+    <div id="think_page_trace_close" style="display:none;text-align:right;height:15px;position:absolute;top:10px;right:12px;cursor:pointer;"><img style="vertical-align:top;" src="data:image/gif;base64,R0lGODlhDwAPAJEAAAAAAAMDA////wAAACH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS4wLWMwNjAgNjEuMTM0Nzc3LCAyMDEwLzAyLzEyLTE3OjMyOjAwICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MUQxMjc1MUJCQUJDMTFFMTk0OUVGRjc3QzU4RURFNkEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MUQxMjc1MUNCQUJDMTFFMTk0OUVGRjc3QzU4RURFNkEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxRDEyNzUxOUJBQkMxMUUxOTQ5RUZGNzdDNThFREU2QSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxRDEyNzUxQUJBQkMxMUUxOTQ5RUZGNzdDNThFREU2QSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAACH5BAAAAAAALAAAAAAPAA8AAAIdjI6JZqotoJPR1fnsgRR3C2jZl3Ai9aWZZooV+RQAOw==" /></div>
+</div>
+<div id="think_page_trace_open" style="height:30px;float:right;text-align:right;overflow:hidden;position:fixed;bottom:0;right:0;color:#000;line-height:30px;cursor:pointer;">
+    <div style="background:#232323;color:#FFF;padding:0 6px;float:right;line-height:30px;font-size:14px">0.143822s </div>
+    <img width="30" style="" title="ShowPageTrace" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBXaW5kb3dzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOjVERDVENkZGQjkyNDExRTE5REY3RDQ5RTQ2RTRDQUJCIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOjVERDVENzAwQjkyNDExRTE5REY3RDQ5RTQ2RTRDQUJCIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NURENUQ2RkRCOTI0MTFFMTlERjdENDlFNDZFNENBQkIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NURENUQ2RkVCOTI0MTFFMTlERjdENDlFNDZFNENBQkIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5fx6IRAAAMCElEQVR42sxae3BU1Rk/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">
+</div>
+
+<script type="text/javascript">
+    (function(){
+        var tab_tit  = document.getElementById('think_page_trace_tab_tit').getElementsByTagName('span');
+        var tab_cont = document.getElementById('think_page_trace_tab_cont').getElementsByTagName('div');
+        var open     = document.getElementById('think_page_trace_open');
+        var close    = document.getElementById('think_page_trace_close').children[0];
+        var trace    = document.getElementById('think_page_trace_tab');
+        var cookie   = document.cookie.match(/thinkphp_show_page_trace=(\d\|\d)/);
+        var history  = (cookie && typeof cookie[1] != 'undefined' && cookie[1].split('|')) || [0,0];
+        open.onclick = function(){
+            trace.style.display = 'block';
+            this.style.display = 'none';
+            close.parentNode.style.display = 'block';
+            history[0] = 1;
+            document.cookie = 'thinkphp_show_page_trace='+history.join('|')
+        }
+        close.onclick = function(){
+            trace.style.display = 'none';
+            this.parentNode.style.display = 'none';
+            open.style.display = 'block';
+            history[0] = 0;
+            document.cookie = 'thinkphp_show_page_trace='+history.join('|')
+        }
+        for(var i = 0; i < tab_tit.length; i++){
+            tab_tit[i].onclick = (function(i){
+                return function(){
+                    for(var j = 0; j < tab_cont.length; j++){
+                        tab_cont[j].style.display = 'none';
+                        tab_tit[j].style.color = '#999';
+                    }
+                    tab_cont[i].style.display = 'block';
+                    tab_tit[i].style.color = '#000';
+                    history[1] = i;
+                    document.cookie = 'thinkphp_show_page_trace='+history.join('|')
+                }
+            })(i)
+        }
+        parseInt(history[0]) && open.click();
+        tab_tit[history[1]].click();
+    })();
+</script>
+</body>
+</html>

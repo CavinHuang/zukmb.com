@@ -1,0 +1,86 @@
+﻿html body{margin-top: 60px; }
+.header {
+  /*background: url(../images/night.gif) #000 repeat;*/
+}
+.download-main{
+  margin-top:90px !important;
+}
+.download-main .layui-colla-item{
+}
+.itkee-down-a{
+  padding:10px;
+  text-align: right;
+}
+.fly-case-header{
+  margin-top:-1px;
+  position: relative;
+  height: 300px;
+  background: url(../images/download.jpg) 20% 90% no-repeat fixed;
+}
+.layui-colla-title{
+  padding-left:45px;
+}
+.mod-angle {
+  position: absolute;
+  left: -10px;
+  height: 24px;
+  color: #fff;
+  text-align: center;
+  background-color: #f63756;
+  line-height: 24px;
+  padding: 0 10px;
+  z-index: 20;
+  top: 0;
+  font-size: 14px;
+}
+.mod-angle:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 24px;
+  width: 0;
+  height: 0;
+  border-top: 6px solid #cd213d;
+  border-left: 10px solid transparent;
+}
+
+.layui-btn-primary{
+  color:#FFF;
+}
+.fly-case-list li h2{
+  overflow: hidden;
+}
+.download-title{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icon {
+  position: absolute;
+  width: 0;
+  height: 0;
+  display: block;
+  text-indent: -4em;
+  top: 0;
+  border-left: 60px rgb(255, 0, 0) solid;
+  border-bottom: 60px rgba(0, 0, 0, 0) solid;
+  left: 0;
+  z-index: 10;
+}
+.icon span.two {
+  margin-left: -15px;
+  margin-top: -27px;
+}
+.icon span {
+  color: rgb(255, 255, 255);
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  display: block;
+  margin-left: -18px;
+  margin-top: -22px;
+}
+.loadmore{
+  text-align: center;
+}
